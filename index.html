@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Scientific Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 font-sans text-slate-200 flex justify-center items-center min-h-screen">
+
+  <div class="bg-slate-800 rounded-2xl shadow-2xl p-6 w-full max-w-lg">
+    <!-- Display -->
+    <div id="display" class="bg-slate-900 text-cyan-400 font-bold text-right text-xl rounded-xl p-4 overflow-x-auto">
+      0
+    </div>
+
+    <!-- Buttons -->
+    <div class="grid grid-cols-4 gap-2 mt-4">
+      <!-- First Row -->
+      <button class="bg-red-500 rounded-xl py-3" onclick="clearDisplay()">C</button>
+      <button class="bg-slate-600 rounded-xl py-3" onclick="backspace()">⌫</button>
+      <button class="bg-slate-600 rounded-xl py-3" onclick="insert('(')">(</button>
+      <button class="bg-slate-600 rounded-xl py-3" onclick="insert(')')">)</button>
+
+      <!-- Digits -->
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('7')">7</button>
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('8')">8</button>
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('9')">9</button>
+      <button class="bg-yellow-500 rounded-xl py-3" onclick="insert('/')">÷</button>
+
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('4')">4</button>
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('5')">5</button>
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('6')">6</button>
+      <button class="bg-yellow-500 rounded-xl py-3" onclick="insert('*')">×</button>
+
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('1')">1</button>
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('2')">2</button>
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('3')">3</button>
+      <button class="bg-yellow-500 rounded-xl py-3" onclick="insert('-')">−</button>
+
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('0')">0</button>
+      <button class="bg-slate-700 rounded-xl py-3" onclick="insert('.')">.</button>
+      <button class="bg-green-500 rounded-xl py-3" onclick="calculate()">=</button>
+      <button class="bg-yellow-500 rounded-xl py-3" onclick="insert('+')">+</button>
+
+      <!-- Scientific Functions -->
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="func('sin')">sin</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="func('cos')">cos</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="func('tan')">tan</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="func('sqrt')">√</button>
+
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="func('log')">ln</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="func('exp')">exp</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="insert('**2')">x²</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="insert('Math.PI')">π</button>
+
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="func('abs')">abs</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="factorial()">n!</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="reciprocal()">1/x</button>
+      <button class="bg-cyan-600 rounded-xl py-3" onclick="insert('Math.random()')">rand</button>
+    </div>
+
+    <!-- String Functions -->
+    <h6 class="text-amber-400 mt-5 font-semibold">String Functions</h6>
+    <div class="grid grid-cols-4 gap-2 mt-2">
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"hello\".length')">length</button>
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"hello\".toUpperCase()')">upper</button>
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"HELLO\".toLowerCase()')">lower</button>
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"hello\"+\"world\"')">concat</button>
+    </div>
+
+    <div class="grid grid-cols-4 gap-2 mt-2">
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"hello\".charAt(1)')">charAt</button>
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"hello\".includes(\"e\")')">includes</button>
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"hello\".slice(1,4)')">slice</button>
+      <button class="bg-slate-600 rounded-xl py-2 text-sm" onclick="insert('\"hello\".replace(\"h\",\"H\")')">replace</button>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById("display");
+
+    function insert(value) {
+      if (display.innerText === "0" || display.innerText === "Error") {
+        display.innerText = value;
+      } else {
+        display.innerText += value;
+      }
+    }
+
+    function clearDisplay() {
+      display.innerText = "0";
+    }
+
+    function backspace() {
+      display.innerText = display.innerText.slice(0, -1) || "0";
+    }
+
+    function calculate() {
+      try {
+        display.innerText = eval(display.innerText);
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+
+    function factorial() {
+      try {
+        let num = eval(display.innerText);
+        if (num < 0 || !Number.isInteger(num)) {
+          display.innerText = "Error";
+          return;
+        }
+        let fact = 1;
+        for (let i = 1; i <= num; i++) fact *= i;
+        display.innerText = fact;
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+
+    function reciprocal() {
+      try {
+        let num = eval(display.innerText);
+        display.innerText = 1 / num;
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+
+    function func(type) {
+      try {
+        let num = eval(display.innerText);
+        switch (type) {
+          case "sin": display.innerText = Math.sin(num); break;
+          case "cos": display.innerText = Math.cos(num); break;
+          case "tan": display.innerText = Math.tan(num); break;
+          case "sqrt": display.innerText = Math.sqrt(num); break;
+          case "log": display.innerText = Math.log(num); break;
+          case "exp": display.innerText = Math.exp(num); break;
+          case "abs": display.innerText = Math.abs(num); break;
+        }
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+  </script>
+
+</body>
+</html>
